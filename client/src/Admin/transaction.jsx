@@ -45,7 +45,7 @@ function Transaction(){
                         <td>{data.user.fullname}</td>
                         <td>{data.endDate.split("T")[0]}</td>
                         <td className="text-success">Active</td>
-                        <td className="text-success">{<Statuspayment status={data.status} />}</td>
+                        <td className="text-success">{data.status}</td>
                     </tr>
                 )
             })}
