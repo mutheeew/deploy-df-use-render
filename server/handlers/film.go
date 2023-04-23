@@ -47,7 +47,7 @@ func (h *handlerFilm) GetFilm(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, dto.ErrorResult{Code: http.StatusBadRequest, Message: err.Error()})
 	}
-	film.ThumbnailFilm = path_file + film.ThumbnailFilm
+	// film.ThumbnailFilm = path_file + film.ThumbnailFilm
 	return c.JSON(http.StatusOK, dto.SuccessResult{Code: http.StatusOK, Data: film})
 }
 
