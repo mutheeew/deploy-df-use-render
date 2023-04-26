@@ -108,21 +108,36 @@ func (h *handlerFilm) CreateFilm(c echo.Context) error {
 }
 
 func (h *handlerFilm) UpdateFilm(c echo.Context) error {
-	request := new(filmdto.UpdateFilmRequest)
-	if err := c.Bind(&request); err != nil {
-		return c.JSON(http.StatusBadRequest, dto.ErrorResult{Code: http.StatusBadRequest, Message: err.Error()})
-	}
-
 	id, _ := strconv.Atoi(c.Param("id"))
 	film, err := h.FilmRepository.GetFilm(id)
+	dataFile := c.Get("dataFile").(string)
+	fmt.Println("this is data file", dataFile)
+	var ctx = context.Background()
+	var CLOUD_NAME = os.Getenv("CLOUD_NAME")
+	var API_KEY = os.Getenv("API_KEY")
+	var API_SECRET = os.Getenv("API_SECRET")
+
+	// Add your Cloudinary credentials ...
+	cld, _ := cloudinary.NewFromParams(CLOUD_NAME, API_KEY, API_SECRET)
+
+	// Upload file to Cloudinary ...
+	resp, err := cld.Upload.Upload(ctx, dataFile, uploader.UploadParams{Folder: "dumbflix-img"})
 
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, dto.ErrorResult{Code: http.StatusBadRequest, Message: err.Error()})
+		fmt.Println(err.Error())
 	}
 
-	// if err != nil {
-	// 	return c.JSON(http.StatusBadRequest, dto.ErrorResult{Code: http.StatusBadRequest, Message: err.Error()})
-	// }
+	year, _ := strconv.Atoi(c.FormValue("year"))
+	category_id, _ := strconv.Atoi(c.FormValue("category_id"))
+
+	request := filmdto.UpdateFilmRequest{
+		Title:         c.FormValue("title"),
+		ThumbnailFilm: resp.SecureURL,
+		Year:          year,
+		CategoryID:    category_id,
+		LinkFilm:      c.FormValue("link"),
+		Description:   c.FormValue("desc"),
+	}
 
 	if request.Title != "" {
 		film.Title = request.Title
@@ -136,11 +151,11 @@ func (h *handlerFilm) UpdateFilm(c echo.Context) error {
 	if request.CategoryID != 0 {
 		film.CategoryID = request.CategoryID
 	}
-	if request.Description != "" {
-		film.Description = request.Description
-	}
 	if request.LinkFilm != "" {
 		film.LinkFilm = request.LinkFilm
+	}
+	if request.Description != "" {
+		film.Description = request.Description
 	}
 
 	data, err := h.FilmRepository.UpdateFilm(film)

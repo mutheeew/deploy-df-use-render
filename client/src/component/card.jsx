@@ -3,10 +3,12 @@ import { Link } from "react-router-dom";
 import {useQuery, useMutation} from 'react-query';
 import {API} from '../config/api';
 import DeleteData from "./modals/DeleteData";
+import {useNavigate} from 'react-router';
 import Swal from 'sweetalert2'
 import { UserContext } from "../context/user";
 
 const Card = ({id, title, year, imageUrl}) => {
+  const navigate = useNavigate();
   const [state] = useContext(UserContext)
   const deleteById = useMutation(async (id) => {
     try{
@@ -33,8 +35,9 @@ const Card = ({id, title, year, imageUrl}) => {
             <p className="text-secondary">{year}</p>
             </div>
         {state.isLogin && state.user.role==='admin' &&(
-        <div>
+        <div className="d-flex justify-content-between">
           <button onClick={() => {deleteById.mutate(id);}} className="btn btn-danger px-3" >Delete</button>
+          <Link className="btn btn-danger px-3" to={`/update-film/${id}`}>Update</Link>
         </div>
         )}
       </Link>

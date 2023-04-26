@@ -11,6 +11,7 @@ import Details from "./pages/Details";
 import Home from "./Admin/home";
 import Transaction from "./Admin/transaction";
 import AddFilm from "./Admin/addfilm"
+import UpdateFilm from "./Admin/updatefilm";
 
 import {UserContext} from './context/user'
 import {PrivateRouteAdmin, PrivateRouteLogin, PrivateRouteUser} from './component/privateroute'
@@ -74,6 +75,7 @@ const App = () =>  {
             <Route path="/payment" element={<Payment />} />
           </Route>
           <Route element={<PrivateRouteAdmin />}>
+            <Route path="/update-film/:id" element={<UpdateFilm />} />
             <Route path="/home" element={<Home />} /> 
             <Route path="/transaction" element={<Transaction />} />
             <Route path="/addfilm" element={<AddFilm />} />
