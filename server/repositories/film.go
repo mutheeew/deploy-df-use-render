@@ -8,6 +8,8 @@ import (
 
 type FilmRepository interface {
 	FindFilm() ([]models.Film, error)
+	FindFilmMovie() ([]models.Film, error)
+	FindFilmSeries() ([]models.Film, error)
 	GetFilm(ID int) (models.Film, error)
 	CreateFilm(film models.Film) (models.Film, error)
 	UpdateFilm(film models.Film) (models.Film, error)
@@ -21,6 +23,18 @@ func RepositoryFilm(db *gorm.DB) *repository {
 func (r *repository) FindFilm() ([]models.Film, error) {
 	var films []models.Film
 	err := r.db.Preload("Category").Find(&films).Error
+
+	return films, err
+}
+func (r *repository) FindFilmMovie() ([]models.Film, error) {
+	var films []models.Film
+	err := r.db.Preload("Category").Find(&films, "category_id = ?", 3).Error
+
+	return films, err
+}
+func (r *repository) FindFilmSeries() ([]models.Film, error) {
+	var films []models.Film
+	err := r.db.Preload("Category").Find(&films, "category_id = ?", 1).Error
 
 	return films, err
 }

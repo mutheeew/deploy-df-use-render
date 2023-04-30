@@ -7,8 +7,8 @@ type Film struct {
 	Year          int      `json:"year" form:"year"`
 	Category      Category `json:"category" `
 	CategoryID    int      `json:"category_id" `
+	LinkFilm      string   `json:"link" form:"link" gorm:"type: varchar(255)"`
 	Description   string   `json:"description" form:"description" gorm:"type: text"`
-	LinkFilm      string   `json: "link" from:"link" gorm:"type:text"`
 }
 
 type FilmResponse struct {
@@ -18,6 +18,6 @@ type FilmResponse struct {
 	Year          int      `json:"year" form:"year"`
 	Category      Category `json:"category" `
 	CategoryID    int      `json:"category_id" `
+	LinkFilm      string   `json:"link" form:"link" gorm:"type: varchar(255)"`
 	Description   string   `json:"description" form:"description" gorm:"type: text"`
-	LinkFilm      string   `json: "link" from:"link" gorm:"type:text"`
 }

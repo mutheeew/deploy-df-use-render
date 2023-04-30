@@ -7,6 +7,7 @@ import { API } from '../config/api';
 
 const AddFilm = () => {
 // handle add and remove episode's form
+const navigate = useNavigate()
     const [episodes, setEpisodes] = useState([]);
 
     const handleAddEpisode = () => {
@@ -19,7 +20,7 @@ const AddFilm = () => {
     //     setEpisodes(newEpisodes);
     // };
 // close
-    const [imageUrl, setImageUrl] = useState();
+    // const [imageUrl, setImageUrl] = useState();
     const [categoryId, setCategoryId] = useState([]);
     const [form, setForm] = useState({
         thumbnail : "",
@@ -29,23 +30,13 @@ const AddFilm = () => {
         category_id : "",
         link : "",
     });
-
-    // const [episode, setEpisode] = useState({
-    //     title : "",
-    //     thumbnail : "",
-    //     link : "",
-    // })
-
+    
     const handleChange = (e) => {
         setForm({
         ...form,
         [e.target.name]:
             e.target.type === "file" ? e.target.files : e.target.value,
         });
-        // if (e.target.type === "file") {
-        // let url = URL.createObjectURL(e.target.files[0]);
-        // setImageUrl(url);
-        // }
     };
 
     let { data: categories, refetch } = useQuery("categoriesCache", async () => {
@@ -94,9 +85,8 @@ const AddFilm = () => {
 
         const response = await API.post('/film', formData, config);
         console.log("add movies success : ", response);
-        console.log(formData);
-
-        // navigate("/home");
+        alert("Sukses menambahkan uhuyyyy")
+        navigate("/home")
 
         } catch (error) {
             e.preventDefault();

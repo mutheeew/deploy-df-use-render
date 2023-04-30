@@ -3,7 +3,6 @@ package handlers
 import (
 	dto "dumbmerch/dto/result"
 	transactiondto "dumbmerch/dto/transaction"
-
 	"fmt"
 	"log"
 	"os"
@@ -56,7 +55,6 @@ func (h *handlerTransaction) CreateTransaction(c echo.Context) error {
 	if err := c.Bind(request); err != nil {
 		return c.JSON(http.StatusBadRequest, dto.ErrorResult{Code: http.StatusBadRequest, Message: err.Error()})
 	}
-
 	userLogin := c.Get("userLogin")
 	userId := userLogin.(jwt.MapClaims)["id"].(float64)
 
@@ -65,7 +63,6 @@ func (h *handlerTransaction) CreateTransaction(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, dto.ErrorResult{Code: http.StatusBadRequest, Message: err.Error()})
 	}
-
 	var transactionIsMatch = false
 	var transactionId int
 	for !transactionIsMatch {
@@ -75,7 +72,6 @@ func (h *handlerTransaction) CreateTransaction(c echo.Context) error {
 			transactionIsMatch = true
 		}
 	}
-
 	// data form pattern submit to pattern entity db Transaction
 	Transactions := models.Transaction{
 		ID:        transactionId,
@@ -114,49 +110,8 @@ func (h *handlerTransaction) CreateTransaction(c echo.Context) error {
 	snapResp, _ := s.CreateTransaction(req)
 
 	return c.JSON(http.StatusOK, dto.SuccessResult{Code: http.StatusOK, Data: snapResp})
+
 }
-
-// func (h *handlerTransaction) UpdateTransaction(c echo.Context) error {
-// 	request := new(transactiondto.TransactionRequest)
-// 	if err := c.Bind(&request); err != nil {
-// 		return c.JSON(http.StatusBadRequest, dto.ErrorResult{Code: http.StatusBadRequest, Message: err.Error()})
-// 	}
-
-// 	id, _ := strconv.Atoi(c.Param("id"))
-// 	Transaction, err := h.TransactionRepository.GetTransaction(id)
-
-// 	if err != nil {
-// 		return c.JSON(http.StatusBadRequest, dto.ErrorResult{Code: http.StatusBadRequest, Message: err.Error()})
-// 	}
-
-// 	if err != nil {
-// 		return c.JSON(http.StatusBadRequest, dto.ErrorResult{Code: http.StatusBadRequest, Message: err.Error()})
-// 	}
-
-// 	if request.StartDate != "" {
-// 		Transaction.StartDate = request.StartDate
-// 	}
-
-// 	if request.EndDate != "" {
-// 		Transaction.EndDate = request.EndDate
-// 	}
-// 	if request.UserID != 0 {
-// 		Transaction.UserID = request.UserID
-// 	}
-// 	if request.Attach != "" {
-// 		Transaction.Attach = request.Attach
-// 	}
-// 	if request.Status != "" {
-// 		Transaction.Status = request.Status
-// 	}
-
-// 	data, err := h.TransactionRepository.UpdateTransaction(Transaction)
-// 	if err != nil {
-// 		return c.JSON(http.StatusInternalServerError, dto.ErrorResult{Code: http.StatusInternalServerError, Message: err.Error()})
-// 	}
-
-// 	return c.JSON(http.StatusOK, dto.SuccessResult{Code: http.StatusOK, Data: data})
-// }
 
 func (h *handlerTransaction) DeleteTransaction(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("id"))
@@ -173,17 +128,6 @@ func (h *handlerTransaction) DeleteTransaction(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, dto.SuccessResult{Code: http.StatusOK, Data: convertDeleteTransaction(data)})
 }
-
-// func convertTransactionResponse(u models.Transaction) models.TransactionResponse {
-// 	return models.TransactionResponse{
-// 		ID:                   u.ID,
-// 		Title:                u.Title,
-// 		ThumbnailTransaction: u.ThumbnailTransaction,
-// 		Year:                 u.Year,
-// 		Category:             u.Category,
-// 		Description:          u.Description,
-// 	}
-// }
 
 func (h *handlerTransaction) Notification(c echo.Context) error {
 	var notificationPayload map[string]interface{}

@@ -1,32 +1,36 @@
 import React, {useContext, useState} from 'react';
-import Series from '../component/series';
+import Series from '../component/listseries';
 import ListMovies from '../component/listmovie';
 import {useNavigate} from 'react-router';
-import { Dropdown } from 'react-bootstrap';
+import { Form, option } from 'react-bootstrap';
 
 const Home = () => {
     const navigate = useNavigate();
+    const [film, setFilm] = useState("movies")
+    function handleChange(e) {
+        setFilm(e.target.value)
+    }
 
     return (
         <>
-            <div style={{ background: "black" }}>
-                <div className='d-flex py-5 justify-content-end mx-5'>
-                    {/* <Dropdown>
-                    <Dropdown.Toggle>
-                        Dropdown Button
-                    </Dropdown.Toggle>
-
-                    <Dropdown.Menu>
-                        <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-                        <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-                        <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
-                    </Dropdown.Menu>
-                    </Dropdown> */}
+            <div style={{ background: "black", height:"100vh" }}>
+                <div className="d-flex justify-content-between text-light p-5">
+                    <div className='d-flex gap-3'>
+                        <h1>List Film</h1>
+                        <div>
+                            <Form.Select style={{ background: "black" }} className='text-light px-2 my-2' onChange={handleChange}>
+                                <option >Category</option>
+                                <option value={"series"}>TV Shows</option>
+                                <option value={"movies"}>Movies</option>
+                            </Form.Select>
+                        </div>
+                    </div>
+                    <div>
                     <a className='btn btn-danger' href="/addfilm">Add Film</a>
+                    </div>
+                    
                 </div>
-            
-            <Series linkto={'/detailseries'}/>
-            <ListMovies />
+            {film === 'movies' ? <ListMovies/> : <Series/>}
             </div>
         </>
     )

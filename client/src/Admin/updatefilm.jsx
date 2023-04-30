@@ -1,12 +1,13 @@
 import React, {useState, useEffect} from "react";
 import { useMutation, useQuery } from 'react-query';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import {Button, Form, Row, Col} from 'react-bootstrap';
 
 import { API } from '../config/api';
 
 const UpdateFilm = () => {
 // handle add and remove episode's form
+    const navigate = useNavigate()
     const { id } = useParams()
     const [episodes, setEpisodes] = useState([]);
 
@@ -62,7 +63,8 @@ const UpdateFilm = () => {
 
         const response = await API.patch(`/film/${id}`, formData, config);
         console.log("update film success : ", response);
-        console.log(formData);
+        alert("Sukses update")
+        navigate("/home")
 
         } catch (error) {
             e.preventDefault();

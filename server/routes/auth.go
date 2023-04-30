@@ -14,6 +14,6 @@ func AuthRoutes(e *echo.Group) {
 	h := handlers.HandlerAuth(authRepository)
 
 	e.POST("/register", h.Register)
-	e.POST("/login", h.Login)                          // add this code
-	e.GET("/check-auth", middleware.Auth(h.CheckAuth)) // add this code
+	e.POST("/login", h.Login) // add this code
+	e.GET("/check-auth", middleware.Auth(h.CheckAuth))
 }

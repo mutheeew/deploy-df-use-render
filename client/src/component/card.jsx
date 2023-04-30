@@ -10,6 +10,17 @@ import { UserContext } from "../context/user";
 const Card = ({id, title, year, imageUrl}) => {
   const navigate = useNavigate();
   const [state] = useContext(UserContext)
+  const [changeUrl, setChangeUrl] = useState("play")
+  console.log(state.user.role, "jeri ga pernah mandi")
+  
+  useEffect(() => {
+    
+    if (state?.user.role === 'admin') {
+      setChangeUrl("play-admin")
+    }
+   
+  }, [])
+  
   const deleteById = useMutation(async (id) => {
     try{
      
@@ -28,14 +39,14 @@ const Card = ({id, title, year, imageUrl}) => {
 
   return (
     <div>
-      <Link to={`/play/${id}`} style={{ textDecoration: "none" }}>
+      <Link to={`/${changeUrl}/${id}`} style={{ textDecoration: "none" }}>
         <div className="bg-black px-2">
           <img src={imageUrl} alt="Card" />
             <div className="text-white" >{title}</div>
             <p className="text-secondary">{year}</p>
             </div>
         {state.isLogin && state.user.role==='admin' &&(
-        <div className="d-flex justify-content-between">
+        <div className="d-flex justify-content-around">
           <button onClick={() => {deleteById.mutate(id);}} className="btn btn-danger px-3" >Delete</button>
           <Link className="btn btn-danger px-3" to={`/update-film/${id}`}>Update</Link>
         </div>

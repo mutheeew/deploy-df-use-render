@@ -34,9 +34,25 @@ func (h *handlerFilm) FindFilm(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, dto.ErrorResult{Code: http.StatusBadRequest, Message: err.Error()})
 	}
-	// for i, p := range films {
-	// 	films[i].ThumbnailFilm = p.ThumbnailFilm
-	// }
+
+	return c.JSON(http.StatusOK, dto.SuccessResult{Code: http.StatusOK, Data: films})
+}
+
+func (h *handlerFilm) FindFilmMovie(c echo.Context) error {
+	films, err := h.FilmRepository.FindFilmMovie()
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, dto.ErrorResult{Code: http.StatusBadRequest, Message: err.Error()})
+	}
+
+	return c.JSON(http.StatusOK, dto.SuccessResult{Code: http.StatusOK, Data: films})
+}
+
+func (h *handlerFilm) FindFilmSeries(c echo.Context) error {
+	films, err := h.FilmRepository.FindFilmSeries()
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, dto.ErrorResult{Code: http.StatusBadRequest, Message: err.Error()})
+	}
+
 	return c.JSON(http.StatusOK, dto.SuccessResult{Code: http.StatusOK, Data: films})
 }
 
@@ -47,7 +63,7 @@ func (h *handlerFilm) GetFilm(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, dto.ErrorResult{Code: http.StatusBadRequest, Message: err.Error()})
 	}
-	// film.ThumbnailFilm = path_file + film.ThumbnailFilm
+
 	return c.JSON(http.StatusOK, dto.SuccessResult{Code: http.StatusOK, Data: film})
 }
 
@@ -63,8 +79,8 @@ func (h *handlerFilm) CreateFilm(c echo.Context) error {
 		ThumbnailFilm: dataFile,
 		Year:          year,
 		CategoryID:    category_id,
-		Description:   c.FormValue("description"),
 		LinkFilm:      c.FormValue("link"),
+		Description:   c.FormValue("desc"),
 	}
 
 	validation := validator.New()
@@ -72,7 +88,6 @@ func (h *handlerFilm) CreateFilm(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, dto.ErrorResult{Code: http.StatusBadRequest, Message: err.Error()})
 	}
-
 	var ctx = context.Background()
 	var CLOUD_NAME = os.Getenv("CLOUD_NAME")
 	var API_KEY = os.Getenv("API_KEY")
@@ -87,7 +102,6 @@ func (h *handlerFilm) CreateFilm(c echo.Context) error {
 	if err != nil {
 		fmt.Println(err.Error())
 	}
-
 	// data form pattern submit to pattern entity db film
 	films := models.Film{
 		Title:         request.Title,
@@ -95,8 +109,8 @@ func (h *handlerFilm) CreateFilm(c echo.Context) error {
 		Year:          request.Year,
 		Category:      request.Category,
 		CategoryID:    request.CategoryID,
-		Description:   request.Description,
 		LinkFilm:      request.LinkFilm,
+		Description:   request.Description,
 	}
 
 	data, err := h.FilmRepository.CreateFilm(films)
@@ -190,8 +204,8 @@ func convertFilmResponse(u models.Film) filmdto.CreateFilmResponse {
 		Year:          u.Year,
 		Category:      u.Category,
 		CategoryID:    u.CategoryID,
-		Description:   u.Description,
 		LinkFilm:      u.LinkFilm,
+		Description:   u.Description,
 	}
 }
 
