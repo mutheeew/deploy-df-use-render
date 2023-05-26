@@ -14,6 +14,9 @@ function Details() {
     console.log(response);
     return response.data.data;
   });
+
+
+
   return (
     <div style={{ backgroundColor: "black", color: "white" }}>
       {film === undefined ? (

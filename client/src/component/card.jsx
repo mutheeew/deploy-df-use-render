@@ -36,6 +36,7 @@ const Card = ({id, title, year, imageUrl}) => {
       // console.log("ini id mute error: ", id)
     }
   });
+  
 
   return (
     <div>

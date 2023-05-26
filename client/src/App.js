@@ -51,16 +51,6 @@ const App = () =>  {
       setIsLoading(false)
     }
   }, []);
-
-  useEffect(() => {
-    // Redirect Auth but just when isLoading is false
-    if (!isLoading) {
-      if (state.isLogin === false) {
-        alert("Login dulu bosss")
-        navigate('/');
-      }
-    }
-  }, [isLoading]);
   
   return isLoading ? null : (
     <>

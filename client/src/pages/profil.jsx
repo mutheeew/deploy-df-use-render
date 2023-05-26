@@ -14,6 +14,7 @@ import { MdLocalPhone } from "react-icons/md";
 import { SiGooglemaps } from "react-icons/si";
 import Button from "react-bootstrap/Button";
 import { UserContext } from "../context/user";
+import Gambar from "../image/profile.jpg"
 
 import {API} from '../config/api'
 
@@ -114,7 +115,7 @@ function Profil() {
           </Col>
           <Col className="col-5">
             <img className="img-fluid"
-              src={Profile}
+              src={Gambar}
               alt="Profile" ></img>
             <Button
               className="mt-3 btn-danger" style={{width:"266px"}}>
